@@ -131,13 +131,13 @@ theorem isCompactOperator_iff_seq {f : X → Y} (f_smul : ∀ (r : k) (x : X), f
 
 -- The dual of a compact operator is compact
 theorem isCompactOperator_dual {T : X →L[k] Y} (T_cptOp : IsCompactOperator T) :
-    IsCompactOperator (fun f : NormedSpace.Dual k Y => f.comp T) := by
+    IsCompactOperator (fun f : StrongDual k Y => f.comp T) := by
 -- Prove that $T_dual$ has the required scalar multiplication property and rewrite the goal by the lemma `cptOp_iff_seq`
-  set T_dual := fun f : NormedSpace.Dual k Y => f.comp T
-  have T_dual_smul : ∀ r : k, ∀ y : NormedSpace.Dual k Y, T_dual (r • y) = r • T_dual y := by
+  set T_dual := fun f : StrongDual k Y => f.comp T
+  have T_dual_smul : ∀ r : k, ∀ y : StrongDual k Y, T_dual (r • y) = r • T_dual y := by
     intros; ext; simp [T_dual]
   rw [isCompactOperator_iff_seq T_dual_smul]
--- Take any bounded sequence $y$ in $NormedSpace.Dual ℝ Y$, assume $y$ is bounded by some $r > 0$
+-- Take any bounded sequence $y$ in $StrongDual ℝ Y$, assume $y$ is bounded by some $r > 0$
   intro y y_bd; rw [Metric.isBounded_iff_subset_ball 0] at y_bd
   rcases y_bd with ⟨r, y_bd⟩; simp only [Set.subset_def, Set.mem_range, Metric.mem_ball,
     dist_zero_right, forall_exists_index, forall_apply_eq_imp_iff] at y_bd
@@ -206,7 +206,7 @@ theorem isCompactOperator_dual {T : X →L[k] Y} (T_cptOp : IsCompactOperator T)
   simp only [Metric.cauchySeq_iff, gt_iff_lt, ge_iff_le, Function.comp_apply, dist_eq_norm] at hφ
 -- Use the subsequence $φ$ to fulfill the goal
   use φ; constructor; assumption
--- Since $NormedSpace.Dual ℝ X$ is complete, we only need to show the sequence in question is a Cauchy sequence
+-- Since $StrongDual ℝ X$ is complete, we only need to show the sequence in question is a Cauchy sequence
   apply cauchySeq_tendsto_of_complete
   simp only [Metric.cauchySeq_iff, gt_iff_lt, ge_iff_le, Function.comp_apply, dist_eq_norm]
 -- Take any $ε > 0$, it suffices to prove the goal in a non-strict inequality form
